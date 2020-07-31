@@ -1,0 +1,38 @@
+name: .NET Core Build & Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      comments:
+        description: Release comments
+        required: false
+
+jobs:
+  build_linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.301
+      
+    - name: Install dependencies
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet build -c Release -r linux-x64 -p:PublishSingleFile=true --no-restore
+      
+    - name: Create a Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: ${{ github.event.inputs.comments }}
+
+
+
