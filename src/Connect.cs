@@ -78,7 +78,7 @@ namespace Connect
 			Console.WriteLine("Play again? (Y/n)");
 			var input = Console.ReadLine();
 			if (string.IsNullOrEmpty(input) || input.ToLower().StartsWith("y"))
-				NewGame();
+				NewGame(_board.width, _board.height, _board.needed);
 		}
 
 		private void GameLoop()
@@ -108,9 +108,9 @@ namespace Connect
 			}
 		}
 
-		public void NewGame()
+		public void NewGame(int w, int h, int needed)
 		{
-			_board = new GameBoard(this, 7, 6);
+			_board = new GameBoard(this, w, h, needed);
 			_players = new Player[]
 			{
 				new Player(0, "Red", "X", ConsoleColor.Red, ConsoleColor.DarkRed),

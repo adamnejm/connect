@@ -9,23 +9,25 @@ namespace Connect.Modules
 	{
 		public bool isDraw;
 
+		public readonly int width;
+		public readonly int height;
+		public readonly int needed;
+
 		private readonly Disc[,] _board;
 		private readonly Connect _connect;
 		private readonly Disc _emptyDisc;
-
-		private readonly int _width;
-		private readonly int _height;
 		private int _discPointer;
 
 		private int _lastDiscX;
 		private int _lastDiscY;
 
 
-		public GameBoard(Connect connect, int w, int h)
+		public GameBoard(Connect connect, int w, int h, int needed)
 		{
 			_connect = connect;
-			_width = w;
-			_height = h;
+			width = w;
+			height = h;
+			this.needed = needed;
 
 			_emptyDisc = new Disc
 			{
@@ -44,7 +46,7 @@ namespace Connect.Modules
 
 		public void MoveDiscPointer(int offset)
 		{
-			if (offset > 0 && _discPointer < _width - 1)
+			if (offset > 0 && _discPointer < width - 1)
 				_discPointer++;
 			else if (offset < 0 && _discPointer > 0)
 				_discPointer--;
@@ -58,9 +60,9 @@ namespace Connect.Modules
 				return false;
 
 			int y = 0;
-			while (++y <= _height)
+			while (++y <= height)
 			{
-				if (y == _height || _board[x, y] != _emptyDisc)
+				if (y == height || _board[x, y] != _emptyDisc)
 				{
 					_board[x, --y] = _connect.GetPlayer().GetDisc();
 					_lastDiscX = x;
@@ -115,10 +117,10 @@ namespace Connect.Modules
 						x += offset[0] * mirror;
 						y += offset[1] * mirror;
 					}
-					while (x >= 0 && x < _width && y >= 0 && y < _height);
+					while (x >= 0 && x < width && y >= 0 && y < height);
 				}
 
-				if (currentWinningLine.Count > 3)
+				if (currentWinningLine.Count >= 4)
 					winningDiscs = winningDiscs.Union(currentWinningLine).ToList();
 				
 			}
@@ -132,7 +134,7 @@ namespace Connect.Modules
 			// check draw
 			if (_lastDiscY == 0)
 			{
-				for (int x = 0; x < _width; x++)
+				for (int x = 0; x < width; x++)
 					if (_board[x, 0] == _emptyDisc)
 						return false;
 
@@ -158,7 +160,7 @@ namespace Connect.Modules
 
 		public void DisplayDiscPointer()
 		{
-			for (int i = 0; i <= _height; i++)
+			for (int i = 0; i < width; i++)
 			{
 				if (i == _discPointer)
 				{
@@ -174,14 +176,14 @@ namespace Connect.Modules
 
 		public void DisplayBoard()
 		{
-			for (int y = 0; y < _height; y++)
+			for (int y = 0; y < height; y++)
 			{
-				for (int x = 0; x < _width; x++)
+				for (int x = 0; x < width; x++)
 				{
 					var disc = _board[x, y];
 					Helper.PrintWithColor(disc.Symbol, disc.ForegroundColor, disc.BackgroundColor);
 
-					if (x < _width - 1)
+					if (x < width - 1)
 						Helper.PrintWithColor(" ", ConsoleColor.White, ConsoleColor.Blue);
 				}
 
