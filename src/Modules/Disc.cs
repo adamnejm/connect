@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Connect.Modules
 {
@@ -37,13 +36,13 @@ namespace Connect.Modules
 			if (!(obj is Disc disc))
 				return false;
 
-			return this.PlayerId == disc.PlayerId;
+			return PlayerId == disc.PlayerId;
 		}
 
 		// Thanks, Damianu!
 		public override int GetHashCode()
 		{
-			return this.PlayerId.GetHashCode();
+			return PlayerId.GetHashCode();
 		}
 	}
 }

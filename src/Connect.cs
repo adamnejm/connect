@@ -1,14 +1,13 @@
 ﻿using Connect.Modules;
 using System;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
 
 namespace Connect
 {
 	public class Connect
 	{
-		public bool noClear;
-		public bool startRandom;
+		public bool flagNoclear;
+		public bool flagStartrandom;
 
 		private GameBoard _board;
 		private Player[] _players;
@@ -66,7 +65,7 @@ namespace Connect
 
 		private void GameOver()
 		{
-			if (!noClear)
+			if (!flagNoclear)
 				Console.Clear();
 
 			if (_board.isDraw)
@@ -91,7 +90,7 @@ namespace Connect
 		{
 			while (true)
 			{
-				if (!noClear)
+				if (!flagNoclear)
 					Console.Clear();
 
 				_board.DisplayDiscPointer();
@@ -125,7 +124,7 @@ namespace Connect
 				new Player(1, "Yellow", "O", ConsoleColor.Yellow, ConsoleColor.DarkYellow)
 			};
 
-			if (startRandom)
+			if (flagStartrandom)
             {
 				var rnd = new Random();
 				_players = _players.OrderBy(ply => rnd.Next()).ToArray();

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace Connect.Modules
 {
@@ -72,7 +71,7 @@ namespace Connect.Modules
 			return true;
 		}
 
-		private int[][] checkOffsets = new int[4][]
+		private static readonly int[][] _checkOffsets = new int[4][]
 		{
 			new int[] {1, 0}, // horizontal
 			new int[] {0, 1}, // vertical
@@ -88,7 +87,7 @@ namespace Connect.Modules
 			// 4 directional check
 			for (int i = 0; i < 4; i++)
 			{
-				var offset = checkOffsets[i % 4];
+				var offset = _checkOffsets[i % 4];
 				var currentWinningLine = new List<(int, int)>();
 
 				// check along the axis and it's mirror

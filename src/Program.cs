@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection.Emit;
+﻿using System.Collections.Generic;
 
 namespace Connect
 {
@@ -36,9 +33,12 @@ namespace Connect
                 }
             }
 
-            Connect connect = new Connect();
-            connect.noClear = flags["-noclear"];
-            connect.startRandom = flags["-startrandom"];
+            Connect connect = new Connect
+            {
+                flagNoclear = flags["-noclear"],
+                flagStartrandom = flags["-startrandom"]
+            };
+
             connect.NewGame(parameters["-w"], parameters["-h"], parameters["-needed"]);
         }
 
