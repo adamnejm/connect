@@ -1,10 +1,15 @@
 ﻿using Connect.Modules;
 using System;
+using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace Connect
 {
 	public class Connect
 	{
+		public bool noClear;
+		public bool startRandom;
+
 		private GameBoard _board;
 		private Player[] _players;
 		private int _currentPlayerId;
@@ -61,7 +66,8 @@ namespace Connect
 
 		private void GameOver()
 		{
-			Console.Clear();
+			if (!noClear)
+				Console.Clear();
 
 			if (_board.isDraw)
 			{
@@ -78,14 +84,15 @@ namespace Connect
 			Console.WriteLine("Play again? (Y/n)");
 			var input = Console.ReadLine();
 			if (string.IsNullOrEmpty(input) || input.ToLower().StartsWith("y"))
-				NewGame(_board.width, _board.height, _board.needed);
+				RestartGame();
 		}
 
 		private void GameLoop()
 		{
 			while (true)
 			{
-				Console.Clear();
+				if (!noClear)
+					Console.Clear();
 
 				_board.DisplayDiscPointer();
 				Console.Write(Environment.NewLine);
@@ -111,12 +118,27 @@ namespace Connect
 		public void NewGame(int w, int h, int needed)
 		{
 			_board = new GameBoard(this, w, h, needed);
+			
 			_players = new Player[]
 			{
 				new Player(0, "Red", "X", ConsoleColor.Red, ConsoleColor.DarkRed),
 				new Player(1, "Yellow", "O", ConsoleColor.Yellow, ConsoleColor.DarkYellow)
 			};
 
+			if (startRandom)
+            {
+				var rnd = new Random();
+				_players = _players.OrderBy(ply => rnd.Next()).ToArray();
+            }
+
+
+			GameLoop();
+		}
+
+		public void RestartGame ()
+		{
+			_board.Empty();
+			SwitchPlayer();
 			GameLoop();
 		}
 	}

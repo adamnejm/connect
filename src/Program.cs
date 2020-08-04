@@ -8,7 +8,7 @@ namespace Connect
     public static class Program
     {
 
-        static (Dictionary<string, int>, Dictionary<string, bool>) ParseArguments(string[] args)
+        static void Main(string[] args)
         {
             var parameters = new Dictionary<string, int>()
             {
@@ -16,7 +16,7 @@ namespace Connect
                 { "-h", 6 },
                 { "-needed", 4 }
             };
-
+            
             var flags = new Dictionary<string, bool>()
             {
                 { "-noclear", false },
@@ -36,18 +36,9 @@ namespace Connect
                 }
             }
 
-            return (parameters, flags);
-        }
-
-        static void Main(string[] args)
-        {
-            //TODO: implements flags
-            // -noclear - dont clear the console
-            // -startrandom - random starting player, otherwise always red
-
-            var (parameters, flags) = ParseArguments(args);
-
             Connect connect = new Connect();
+            connect.noClear = flags["-noclear"];
+            connect.startRandom = flags["-startrandom"];
             connect.NewGame(parameters["-w"], parameters["-h"], parameters["-needed"]);
         }
 
